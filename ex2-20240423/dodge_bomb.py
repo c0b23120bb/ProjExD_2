@@ -15,6 +15,14 @@ pg_move = {
     pg.K_RIGHT: (7,0)
 }  #移動用辞書の設定
 
+def free_bgm():
+    """
+    フリーBGMの導入
+    """
+    pg.mixer.init(frequency = 44100)    # 初期設定
+    pg.mixer.music.load("fig/2_23_AM_2.mp3")     # 音楽ファイルの読み込み
+    pg.mixer.music.play(1)              # 音楽の再生回数(1回)
+
 
 def check_bound(obj_rct):  #画面外、画面内の判定
     """
@@ -112,6 +120,8 @@ def main():
 
         screen.blit(bg_img, [0, 0]) 
 
+        free_bmg() #フリーBGMの再生
+
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]
 
@@ -166,3 +176,4 @@ if __name__ == "__main__":
     main()
     pg.quit()
     sys.exit()
+    free_bgm()
