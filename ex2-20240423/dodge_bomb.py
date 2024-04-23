@@ -11,7 +11,7 @@ pg_move = {
     pg.K_DOWN: (0,5),
     pg.K_LEFT: (-5,0),
     pg.K_RIGHT: (5,0)
-}
+}  #移動用辞書の設定
 
 
 def main():
@@ -33,9 +33,9 @@ def main():
         sum_mv = [0, 0]
 
         for k,v in pg_move.items():
-            if key_lst[k]:
-                sum_mv[0] += v[0]
-                sum_mv[1] += v[1]
+            if key_lst[k]:  #対応するキーが押されていたら
+                sum_mv[0] += v[0]  #上下
+                sum_mv[1] += v[1]  #左右
 
         #if key_lst[pg.K_UP]:
         #    sum_mv[1] -= 5
