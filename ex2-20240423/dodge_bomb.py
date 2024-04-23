@@ -14,6 +14,17 @@ pg_move = {
     pg.K_RIGHT: (5,0)
 }  #移動用辞書の設定
 
+def check_bound(obj_rct):  #画面外、画面内の判定
+    horizontal, vertical = True, True  #横、縦が画面内
+
+    if obj_rct.right < 10 or WIDTH -10 < obj_rct.left:  #左右の画面外
+        horizontal = False
+    if obj_rct.bottom < 10 or HEIGHT -10 < obj_rct.top:  #上下の画面外
+        vertical = False
+    
+    return horizontal, vertical
+
+
 
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
@@ -28,7 +39,7 @@ def main():
     pg.draw.circle(bd_img, (255, 0, 0), (10, 10), 10)  #円、赤、半径10
     bd_rct = bd_img.get_rect()
     bd_rct.center = random.randint(0, WIDTH), random.randint(0, HEIGHT)  #ランダムに生成
-    vx, vy = +5, -5
+    vx, vy = +5, +5
 
     clock = pg.time.Clock()
     tmr = 0
@@ -57,6 +68,17 @@ def main():
 
         kk_rct.move_ip(sum_mv)
         bd_rct.move_ip(vx, vy)  #爆弾移動
+
+        if check_bound(kk_rct) != (True, True):  #画面外でそれ以上進まない
+            kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
+        
+        horizontal, vertical = check_bound(bd_rct)  #爆弾の跳ね返り
+        if horizontal != True:
+            vx *= -1  #反転
+        if vertical != True:
+            vy *= -1
+            
+
 
         screen.blit(kk_img, kk_rct)
         screen.blit(bd_img, bd_rct)
