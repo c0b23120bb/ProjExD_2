@@ -14,6 +14,8 @@ pg_move = {
     pg.K_RIGHT: (5,0)
 }  #移動用辞書の設定
 
+
+
 def check_bound(obj_rct):  #画面外、画面内の判定
     horizontal, vertical = True, True  #横、縦が画面内
 
@@ -41,8 +43,22 @@ def main():
     bd_rct.center = random.randint(0, WIDTH), random.randint(0, HEIGHT)  #ランダムに生成
     vx, vy = +5, +5
 
+    #ゲームオーバー画面
+    gm_img = pg.Surface((WIDTH,HEIGHT))  #ブラックアウト
+    pg.draw.rect(gm_img,(0),(0,0,WIDTH,HEIGHT))
+    gm_img.set_alpha(150) #半透明
+    gm_rct = gm_img.get_rect()
+    gm_rct.center = WIDTH/2, HEIGHT/2
+    fonto = pg.font.Font(None,100) 
+    txt = fonto.render("Game Over",True,(0))
+
+    gm_kk_img = pg.transform.rotozoom(pg.image.load("fig/2.png"), 0, 2.0)
+    gm_kk_img2 = pg.transform.flip(gm_kk_img,True,False) #画像反転
+    
+
     clock = pg.time.Clock()
     tmr = 0
+
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT: 
@@ -50,6 +66,15 @@ def main():
             
         if kk_rct.colliderect(bd_rct): #こうかとんと爆弾の衝突時
             print("GameOver")
+
+            #ブラックアウトと文字、こうかとんの表示
+            screen.blit(gm_img,gm_rct)
+            screen.blit(txt,[WIDTH/2 - 170, HEIGHT/2 - 40])
+            screen.blit(gm_kk_img, (500,370))
+            screen.blit(gm_kk_img2, (1050,370))
+            
+            pg.display.update()
+            pg.time.wait(5000)  #5秒間止める
             return #mainから抜ける
 
         screen.blit(bg_img, [0, 0]) 
@@ -82,8 +107,6 @@ def main():
             vx *= -1  #反転
         if vertical != True:
             vy *= -1
-            
-
 
         screen.blit(kk_img, kk_rct)
         screen.blit(bd_img, bd_rct)
