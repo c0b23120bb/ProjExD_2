@@ -15,6 +15,15 @@ pg_move = {
     pg.K_RIGHT: (7,0)
 }  #移動用辞書の設定
 
+
+def mode_change():
+    bd_img2 = pg.Surface((20, 20))  #爆弾２の作成
+    bd_img2.set_colorkey((0,0,0))  #黒の枠を無くす
+    pg.draw.circle(bd_img2, (0, 0, 255), (10, 10), 10)  #円、赤、半径10
+    bd_rct2 = bd_img2.get_rect()
+    bd_rct2.center = random.randint(0, WIDTH), random.randint(0, HEIGHT)  #ランダムに生成
+    vx2, vy2 = +5, +5
+
 def free_bgm():
     """
     フリーBGMの導入
@@ -93,7 +102,7 @@ def main():
     gm_kk_img = pg.transform.rotozoom(pg.image.load("fig/2.png"), 0, 2.0)
     gm_kk_img2 = pg.transform.flip(gm_kk_img,True,False) #画像反転
 
-    r = 0
+    start = 0
     
 
     clock = pg.time.Clock()
@@ -101,7 +110,7 @@ def main():
 
     while True:
         for event in pg.event.get():
-            if event.type == pg.QUIT: 
+            if event.type == pg.QUIT:
                 return
             
         if kk_rct.colliderect(bd_rct): #こうかとんと爆弾の衝突時
@@ -120,7 +129,10 @@ def main():
 
         screen.blit(bg_img, [0, 0]) 
 
-        free_bmg() #フリーBGMの再生
+        if start == 0:
+            free_bgm()
+            start = 1
+
 
         key_lst = pg.key.get_pressed()
         sum_mv = [0, 0]
@@ -176,4 +188,3 @@ if __name__ == "__main__":
     main()
     pg.quit()
     sys.exit()
-    free_bgm()
