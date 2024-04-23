@@ -17,6 +17,10 @@ pg_move = {
 
 
 def mode_change():
+    """
+    対応するキーを押すと難易度が変更されて
+    爆弾が1つ追加される
+    """
     bd_img2 = pg.Surface((20, 20))  #爆弾２の作成
     bd_img2.set_colorkey((0,0,0))  #黒の枠を無くす
     pg.draw.circle(bd_img2, (0, 0, 255), (10, 10), 10)  #円、赤、半径10
@@ -47,6 +51,13 @@ def check_bound(obj_rct):  #画面外、画面内の判定
         vertical = False
     
     return horizontal, vertical
+
+def kk_direction():
+    """
+    飛ぶ方向に従ってこうかとんの画像を切り替える関数
+    押下キーに対する移動量の合計値タプルをキー、rotozoomしたSurfaceを
+    値とした辞書を準備
+    戻り値:辞書"""
 
 
 def GameOver():
@@ -89,6 +100,7 @@ def main():
     bd_rct = bd_img.get_rect()
     bd_rct.center = random.randint(0, WIDTH), random.randint(0, HEIGHT)  #ランダムに生成
     vx, vy = +5, +5
+
 
     #ゲームオーバー画面
     gm_img = pg.Surface((WIDTH,HEIGHT))  #ブラックアウト
@@ -162,9 +174,6 @@ def main():
             vx = 30
         if vy > 30:
             vy = 30
-        
-        
-
 
         if check_bound(kk_rct) != (True, True):  #画面外でそれ以上進まない
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
