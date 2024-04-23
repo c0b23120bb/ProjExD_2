@@ -1,6 +1,7 @@
 import os
 import sys
 import pygame as pg
+import random
 
 
 WIDTH, HEIGHT = 1600, 900
@@ -21,6 +22,14 @@ def main():
     kk_img = pg.transform.rotozoom(pg.image.load("fig/3.png"), 0, 2.0)
     kk_rct = kk_img.get_rect()
     kk_rct.center = 900, 400
+
+    bd_img = pg.Surface((20, 20))  #爆弾の作成
+    bd_img.set_colorkey((0,0,0))  #黒の枠を無くす
+    pg.draw.circle(bd_img, (255, 0, 0), (10, 10), 10)  #円、赤、半径10
+    bd_rct = bd_img.get_rect()
+    bd_rct.center = random.randint(0, WIDTH), random.randint(0, HEIGHT)  #ランダムに生成
+    vx, vy = +5, -5
+
     clock = pg.time.Clock()
     tmr = 0
     while True:
@@ -47,7 +56,11 @@ def main():
         #   sum_mv[0] += 5
 
         kk_rct.move_ip(sum_mv)
+        bd_rct.move_ip(vx, vy)  #爆弾移動
+
         screen.blit(kk_img, kk_rct)
+        screen.blit(bd_img, bd_rct)
+
         pg.display.update()
         tmr += 1
         clock.tick(50)
