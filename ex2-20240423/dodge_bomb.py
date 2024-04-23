@@ -17,9 +17,9 @@ pg_move = {
 def check_bound(obj_rct):  #画面外、画面内の判定
     horizontal, vertical = True, True  #横、縦が画面内
 
-    if obj_rct.right < 10 or WIDTH -10 < obj_rct.left:  #左右の画面外
+    if obj_rct.left < 0 or WIDTH < obj_rct.right:  #左右の画面外
         horizontal = False
-    if obj_rct.bottom < 10 or HEIGHT -10 < obj_rct.top:  #上下の画面外
+    if obj_rct.top < 0 or HEIGHT < obj_rct.bottom:  #上下の画面外
         vertical = False
     
     return horizontal, vertical
@@ -47,6 +47,11 @@ def main():
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
+            
+        if kk_rct.colliderect(bd_rct): #こうかとんと爆弾の衝突時
+            print("GameOver")
+            return #mainから抜ける
+
         screen.blit(bg_img, [0, 0]) 
 
         key_lst = pg.key.get_pressed()
